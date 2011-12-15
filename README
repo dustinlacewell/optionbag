@@ -62,10 +62,10 @@
     AttributeError.
 
     >>> o = optionbag({'foo.bar.baz':-1})
-    >>> o.zigzag = -1
+    >>> o.zigzag
     *** AttributeError: 'optionbag' object has no attribute 'zigzag'
 
-    Assigning a value a node that has not been
+    Assigning a value to a node that has not been
     explcitly initialized through the optionbag
     will raise a BagOptionError.
 
