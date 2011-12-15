@@ -62,11 +62,11 @@ class InnerBag(object):
 
 class optionbag(object):
     '''
-    An object that is used for maintaining to an
+    An object that is used for maintaining an
     application's settings. It has been designed
-    with both the ease in data-oriented
+    with both the ease of data-oriented
     initialization and natural access from the 
-    code.
+    code in mind.
 
     When initializing an optionbag it will be used
     largely like a normal dictionary.
