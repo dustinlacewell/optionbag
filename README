@@ -1,0 +1,91 @@
+    An object that is used for maintaining to an
+    application's settings. It has been designed
+    with both the ease in data-oriented
+    initialization and natural access from the 
+    code.
+
+    When initializing an optionbag it will be used
+    largely like a normal dictionary.
+
+    >>> o = optionbag()
+    >>> o['foobar'] = True
+    >>> o['foobar]
+    True
+
+    Similarly to an AttributeDict, keys and their
+    values will automatically be mapped to 
+    corresponding attributes.
+
+    >>> o = optionbag()
+    >>> o['foobar'] = True
+    >>> o.foobar
+    True
+    
+    Interestingly, if one uses dot-notation in the
+    key an object tree is created instead.
+
+    >>> o = optionbag()
+    >>> o['foo.bar'] = True
+    >>> o.foo.bar
+    True
+
+    The bag may also be initialized by passing
+    it an actual dictionary to it's constructor.
+
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o.foo.bar.baz
+    -1
+
+    The nodes in the object tree are called
+    InnerBags and they have some special properties.
+    For example, any attribute that contains child 
+    bags of its own will evaluate to True.
+    
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o.foo.bar.baz
+    -1
+    >>> o.foo.bar
+    True
+    
+    Accessing non-existent attributes on an InnerBag 
+    will return a new InnerBag that will evaluate to
+    False.
+
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o.foo.bar.baz
+    -1
+    >>> o.foo.biz
+    False
+
+    However, accessing non-existent attributes on the
+    actual root `optionbag' object will raise a normal
+    AttributeError.
+
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o.zigzag = -1
+    *** AttributeError: 'optionbag' object has no attribute 'zigzag'
+
+    Assigning a value a node that has not been
+    explcitly initialized through the optionbag
+    will raise a BagOptionError.
+
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o.foo.bar.biz = -1
+    *** BagOptionException: Cannot set uninitialized option `biz'
+
+    This includes "parent" nodes of existing
+    options.
+
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o.foo.bar = -1
+    *** BagOptionException: Cannot set uninitialized option `biz'
+
+    Attempting to initialize an option that would
+    destroy other branches of the tree will raise
+    a BagOcclusionException.
+
+    >>> o = optionbag({'foo.bar.baz':-1})
+    >>> o['foo.bar'] = -1
+    *** BagOcclusionException: `foo.bar' option would occlude `foo.bar.baz'.
+
+    NOTE: optionbag is *not* a dictionary
